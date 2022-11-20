@@ -11,17 +11,18 @@ import {
 
 const register = async (driver: RegisterType) => {
   const { passwordConfirmation, ...driverDB } = driver;
-  const salt = await bcrypt.genSalt(10);
-  driverDB.password = await bcrypt.hash(passwordConfirmation, salt);
+  //const salt = await bcrypt.genSalt(10);
+  //driverDB.password = await bcrypt.hash(passwordConfirmation, salt);
   const driverSaved = await driverRepository.save({ ...driverDB });
 
-  const uid = driverSaved._id.toString();
-  const claims = {
-    email: driverSaved.email,
-    rol: Rol.DRIVER,
-  };
-  const customToken = await getAuth().createCustomToken(uid, claims);
-  return customToken;
+  // const uid = driverSaved._id.toString();
+  // const claims = {
+  //   email: driverSaved.email,
+  //   rol: Rol.DRIVER,
+  // };
+  // const customToken = await getAuth().createCustomToken(uid, claims);
+  // return customToken;
+  return driverSaved
 };
 
 const login = async (driver: LoginType) => {
@@ -46,7 +47,7 @@ const login = async (driver: LoginType) => {
 
   const uid = driverFound._id.toString();
   const claims = {
-    firstname: driverFound.firstname,
+    name: driverFound.name,
     lastname: driverFound.lastname,
     email: driverFound.email,
     rol: Rol.PASSENGER,
@@ -69,9 +70,9 @@ const update = async (driver: UpdateType) => {
   }
 
   const driverFiltered = {
-    firstname: driverUpdated.firstname,
+    name: driverUpdated.name,
     lastname: driverUpdated.lastname,
-    phoneNumber: driverUpdated.phoneNumber,
+    birthday: driverUpdated.birthday,
     age: driverUpdated.age,
     license: driverUpdated.license,
     vehicle: driverUpdated.vehicle,
@@ -93,9 +94,9 @@ const block = async (driverBody: BlockBodyType, driverParams: BlockParamsType) =
   }
 
   const driverFiltered = {
-    firstname: driverUpdated.firstname,
+    name: driverUpdated.name,
     lastname: driverUpdated.lastname,
-    phoneNumber: driverUpdated.phoneNumber,
+    birthday: driverUpdated.birthday,
     age: driverUpdated.age,
     license: driverUpdated.license,
     vehicle: driverUpdated.vehicle,

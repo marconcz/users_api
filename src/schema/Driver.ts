@@ -6,11 +6,12 @@ const RegisterSchema = z.object({
     email: z.string().min(1).email(),
     password: z.string().min(6),
     passwordConfirmation: z.string(),
+    name: z.string(),
+    lastname: z.string(),
+    birthday: z.string(),
   }),
-}).refine((register) => register.body.password === register.body.passwordConfirmation, {
-  path: ['body', 'passwordConfirmation'],
-  message: 'Passwords do not match',
-});
+})
+
 
 const LoginSchema = z.object({
   body: z.object({

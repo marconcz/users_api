@@ -11,6 +11,7 @@ const register = async (request: Request, response: Response) => {
   }
 };
 
+
 const login = async (request: Request, response: Response) => {
   try {
     const customToken = await driverService.login(request.body);

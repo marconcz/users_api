@@ -2,10 +2,10 @@ import { getModelForClass, prop } from '@typegoose/typegoose';
 import Vehicle from '@src/model/Vehicle';
 
 class Driver {
-  @prop({ trim: true })
-  public firstname?: string;
+  @prop({ required: true, trim: true})
+  public name?: string;
 
-  @prop({ trim: true })
+  @prop({ required: true, trim: true})
   public lastname?: string;
 
   @prop({ required: true, unique: true, trim: true })
@@ -14,8 +14,8 @@ class Driver {
   @prop({ required: true })
   public password!: string;
 
-  @prop()
-  public phoneNumber?: string;
+  @prop({required: true, trim: true})
+  public birthday!: string;
 
   @prop()
   public age?: number;

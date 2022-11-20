@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+//import bcrypt from 'bcrypt';
 //import { getAuth } from 'firebase-admin/auth';
 import passengerRepository from '@src/repository/passenger';
 import Rol from '@src/model/Rol';
@@ -9,8 +9,8 @@ import { UserForbiddenError, UserNotFoundError, UserUnauthorizedError } from '@s
 
 const register = async (passenger: RegisterType) => {
   const { passwordConfirmation, ...passengerDB } = passenger;
-  const salt = await bcrypt.genSalt(10);
-  passengerDB.password = await bcrypt.hash(passwordConfirmation, salt);
+  //const salt = await bcrypt.genSalt(10);
+  //passengerDB.password = await bcrypt.hash(passwordConfirmation, salt);
   const passengerSaved = await passengerRepository.save({ ...passengerDB });
 
   //const uid = passengerSaved._id.toString();
@@ -23,17 +23,17 @@ const register = async (passenger: RegisterType) => {
 };
 
 const validate = async (passenger: CheckType) => {
+
   const passengerFound = await passengerRepository.findOneByEmail(passenger.email);
 
   if (!passengerFound) {
-    throw new UserNotFoundError('User not found');
+    return {passenger : false};
+  }
+  else{
+    return {passenger : true};
   }
 
-  const passengerFiltered = {
-    email: passengerFound.email
-  };
-
-  return passengerFiltered;
+ // return passengerFiltered;
 }
 const login = async (passenger: LoginType) => {
   const passengerFound = await passengerRepository.findOneByEmail(passenger.email);
@@ -80,9 +80,9 @@ const update = async (passenger: UpdateType) => {
   }
 
   const passengerFiltered = {
-    firstname: passengerUpdated.firstname,
+    name: passengerUpdated.name,
     lastname: passengerUpdated.lastname,
-    phoneNumber: passengerUpdated.phoneNumber,
+    birthday: passengerUpdated.birthday,
     age: passengerUpdated.age,
     address: passengerUpdated.address,
   };
@@ -103,9 +103,9 @@ const block = async (passengerBody: BlockBodyType, passengerParams: BlockParamsT
   }
 
   const passengerFiltered = {
-    firstname: passengerUpdated.firstname,
+    name: passengerUpdated.name,
     lastname: passengerUpdated.lastname,
-    phoneNumber: passengerUpdated.phoneNumber,
+    birthday: passengerUpdated.birthday,
     age: passengerUpdated.age,
     address: passengerUpdated.address,
   };
