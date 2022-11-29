@@ -10,6 +10,8 @@ const RegisterSchema = z.object({
     lastname: z.string(),
     birthday: z.string(),
     rol: z.string(),
+    waddress: z.string(),
+    key: z.string(),
   }),
 })
 // .refine((register) => register.body.password === register.body.passwordConfirmation, {

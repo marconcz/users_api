@@ -31,6 +31,12 @@ class Passenger {
 
   @prop({required: true, trim: true})
   public rol!: string;
+
+  @prop({required: true, trim: true})
+  public waddress!: string;
+
+  @prop({required: true, trim: true})
+  public key!: string;
 }
 
 const PassengerModel = getModelForClass(Passenger);
