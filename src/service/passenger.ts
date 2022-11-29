@@ -1,4 +1,4 @@
-//import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 //import { getAuth } from 'firebase-admin/auth';
 import passengerRepository from '@src/repository/passenger';
 import Rol from '@src/model/Rol';
@@ -9,8 +9,8 @@ import { UserForbiddenError, UserNotFoundError, UserUnauthorizedError } from '@s
 
 const register = async (passenger: RegisterType) => {
   const { passwordConfirmation, ...passengerDB } = passenger;
-  //const salt = await bcrypt.genSalt(10);
-  //passengerDB.password = await bcrypt.hash(passwordConfirmation, salt);
+  const salt = await bcrypt.genSalt(10);
+  passengerDB.password = await bcrypt.hash(passwordConfirmation, salt);
   const passengerSaved = await passengerRepository.save({ ...passengerDB });
 
   //const uid = passengerSaved._id.toString();
@@ -67,13 +67,13 @@ const login = async (passenger: LoginType) => {
 };
 
 const update = async (passenger: UpdateType) => {
-  const { credential, ...passengerDB } = passenger;
+  const { ...passengerDB } = passenger;
 
-  if (credential.rol !== Rol.PASSENGER) {
+  if (passenger.rol !== Rol.PASSENGER) {
     throw new UserForbiddenError('Not enough privileges to update a passenger');
   }
 
-  const passengerUpdated = await passengerRepository.findOneAndUpdate(credential.id, passengerDB);
+  const passengerUpdated = await passengerRepository.findOneAndUpdate(passenger.id, passengerDB);
 
   if (!passengerUpdated) {
     throw new UserNotFoundError('User not found');

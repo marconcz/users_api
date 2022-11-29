@@ -28,6 +28,9 @@ class Passenger {
 
   @prop({ default: true })
   public isVerified?: boolean;
+
+  @prop({required: true, trim: true})
+  public rol!: string;
 }
 
 const PassengerModel = getModelForClass(Passenger);
