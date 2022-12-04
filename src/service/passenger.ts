@@ -112,12 +112,27 @@ const block = async (passengerBody: BlockBodyType, passengerParams: BlockParamsT
   return passengerFiltered;
 };
 
+const data = async (passenger: CheckType) => {
+
+  const passengerFound = await passengerRepository.findOneByEmail(passenger.email);
+
+  if (!passengerFound) {
+    return {};
+  }
+  else{
+    return passengerFound;
+  }
+
+ // return passengerFiltered;
+}
+
 const passengerService = {
   validate,
   register,
   login,
   update,
   block,
+  data,
 };
 
 export default passengerService;
