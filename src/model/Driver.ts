@@ -31,6 +31,15 @@ class Driver {
 
   @prop({ default: true })
   public isVerified?: boolean;
+  
+  @prop({required: true, trim: true})
+  public rol!: string;
+
+  @prop({required: true, trim: true})
+  public waddress!: string;
+
+  @prop({required: true, trim: true})
+  public key!: string;
 }
 
 const DriverModel = getModelForClass(Driver);

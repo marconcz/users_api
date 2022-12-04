@@ -9,6 +9,9 @@ const RegisterSchema = z.object({
     name: z.string(),
     lastname: z.string(),
     birthday: z.string(),
+    rol: z.string(),
+    waddress: z.string(),
+    key: z.string(),
   }),
 })
 

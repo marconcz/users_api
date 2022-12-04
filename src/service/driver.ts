@@ -11,8 +11,8 @@ import {
 
 const register = async (driver: RegisterType) => {
   const { passwordConfirmation, ...driverDB } = driver;
-  //const salt = await bcrypt.genSalt(10);
-  //driverDB.password = await bcrypt.hash(passwordConfirmation, salt);
+  const salt = await bcrypt.genSalt(10);
+  driverDB.password = await bcrypt.hash(passwordConfirmation, salt);
   const driverSaved = await driverRepository.save({ ...driverDB });
 
   // const uid = driverSaved._id.toString();
