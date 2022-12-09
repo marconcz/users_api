@@ -10,7 +10,7 @@ const RegisterSchema = z.object({
     lastname: z.string(),
     birthday: z.string(),
     rol: z.string(),
-    waddress: z.string(),
+    address: z.string(),
     key: z.string(),
   }),
 })
@@ -41,6 +41,7 @@ const UpdateSchema = z.object({
 
     name: z.string().min(1).trim(),
     lastname: z.string().min(1).trim(),
+    address: z.string(),
     //phoneNumber: z.string(),
     //age: z.number(),
     //address: z.object({

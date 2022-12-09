@@ -85,6 +85,7 @@ const update = async (passenger: UpdateType) => {
     birthday: passengerUpdated.birthday,
     age: passengerUpdated.age,
     address: passengerUpdated.address,
+    key: passengerUpdated.key,
   };
   return passengerFiltered;
 };
@@ -117,7 +118,7 @@ const data = async (passenger: CheckType) => {
   const passengerFound = await passengerRepository.findOneByEmail(passenger.email);
 
   if (!passengerFound) {
-    return {};
+    throw new UserNotFoundError('User not found');
   }
   else{
     return passengerFound;

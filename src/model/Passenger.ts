@@ -1,5 +1,4 @@
 import { getModelForClass, prop } from '@typegoose/typegoose';
-import Address from '@src/model/Address';
 
 class Passenger {
   @prop({ required: true, trim: true})
@@ -20,9 +19,6 @@ class Passenger {
   @prop()
   public age?: number;
 
-  @prop({ _id: false })
-  public address?: Address;
-
   @prop({ default: false })
   public isBlocked?: boolean;
 
@@ -33,7 +29,7 @@ class Passenger {
   public rol!: string;
 
   @prop({required: true, trim: true})
-  public waddress!: string;
+  public address!: string;
 
   @prop({required: true, trim: true})
   public key!: string;

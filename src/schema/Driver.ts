@@ -10,10 +10,17 @@ const RegisterSchema = z.object({
     lastname: z.string(),
     birthday: z.string(),
     rol: z.string(),
-    waddress: z.string(),
+    address: z.string(),
     key: z.string(),
   }),
 })
+
+
+const CheckSchema = z.object({
+  body: z.object({
+    email: z.string().min(1).email()
+  }),
+});
 
 
 const LoginSchema = z.object({
@@ -25,22 +32,24 @@ const LoginSchema = z.object({
 
 const UpdateSchema = z.object({
   body: z.object({
-    credential: z.object({
-      id: z.string(),
-      rol: z.nativeEnum(Rol),
-    }),
-    firstname: z.string().min(1).trim(),
+  
+    id: z.string(),
+    rol: z.nativeEnum(Rol),
+
+    name: z.string().min(1).trim(),
     lastname: z.string().min(1).trim(),
-    phoneNumber: z.string(),
-    age: z.number(),
-    license: z.string(),
-    vehicle: z.object({
-      vin: z.string(),
-      model: z.string(),
-      year: z.string(),
-    }),
-  }),
-});
+    address: z.string(),
+    //phoneNumber: z.string(),
+    //age: z.number(),
+    //address: z.object({
+      //tate: z.string(),
+      //city: z.string(),
+      //street: z.object({
+        //name: z.string(),
+        //number: z.string(),
+        //appartment: z.string(),
+      }),
+    })
 
 const BlockSchema = z.object({
   body: z.object({
@@ -60,6 +69,7 @@ const DriverSchema = {
   LoginSchema,
   UpdateSchema,
   BlockSchema,
+  CheckSchema,
 };
 
 type RegisterType = z.infer<typeof RegisterSchema>['body'];
@@ -67,8 +77,9 @@ type LoginType = z.infer<typeof LoginSchema>['body'];
 type UpdateType = z.infer<typeof UpdateSchema>['body'];
 type BlockBodyType = z.infer<typeof BlockSchema>['body'];
 type BlockParamsType = z.infer<typeof BlockSchema>['params'];
+type CheckType = z.infer<typeof CheckSchema>['body'];
 
 export {
-  RegisterType, LoginType, UpdateType, BlockBodyType, BlockParamsType,
+  RegisterType, LoginType, UpdateType, BlockBodyType, BlockParamsType,CheckType,
 };
 export default DriverSchema;

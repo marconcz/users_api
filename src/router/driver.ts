@@ -9,7 +9,8 @@ const driverRouter = express.Router();
 
 driverRouter.post('/drivers', validateSchema(DriverSchema.RegisterSchema), driverController.register);
 driverRouter.post('/drivers/login', validateSchema(DriverSchema.LoginSchema), driverController.login);
-driverRouter.put('/drivers', authenticate, validateSchema(DriverSchema.UpdateSchema), driverController.update);
+driverRouter.put('/drivers', validateSchema(DriverSchema.UpdateSchema), driverController.update);
 driverRouter.put('/drivers/:id/block', authenticate, validateSchema(DriverSchema.BlockSchema), driverController.block);
+driverRouter.post('/driver/data', validateSchema(DriverSchema.CheckSchema), driverController.data);
 
 export default driverRouter;

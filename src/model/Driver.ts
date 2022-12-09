@@ -36,7 +36,7 @@ class Driver {
   public rol!: string;
 
   @prop({required: true, trim: true})
-  public waddress!: string;
+  public address!: string;
 
   @prop({required: true, trim: true})
   public key!: string;

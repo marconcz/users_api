@@ -58,11 +58,27 @@ const block = async (request: Request, response: Response) => {
   }
 };
 
+const data = async (request: Request, response: Response) => {
+  try {
+    const customToken = await driverService.data(request.body);
+    response.status(200).send(customToken);
+  } catch (error) {
+    if (error instanceof UserUnauthorizedError) {
+      response.status(401).send({ error: error.message });
+    } else if (error instanceof UserForbiddenError) {
+      response.status(403).send({ error: error.message });
+    } else {
+      response.status(500).send(error);
+    }
+  }
+}
+
 const driverController = {
   register,
   login,
   update,
   block,
+  data,
 };
 
 export default driverController;
