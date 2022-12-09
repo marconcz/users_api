@@ -23,17 +23,17 @@ const register = async (passenger: RegisterType) => {
 };
 
 const validate = async (passenger: CheckType) => {
+
   const passengerFound = await passengerRepository.findOneByEmail(passenger.email);
 
   if (!passengerFound) {
-    throw new UserNotFoundError('User not found');
+    return {passenger : false};
+  }
+  else{
+    return {passenger : true};
   }
 
-  const passengerFiltered = {
-    email: passengerFound.email
-  };
-
-  return passengerFiltered;
+ // return passengerFiltered;
 }
 const login = async (passenger: LoginType) => {
   const passengerFound = await passengerRepository.findOneByEmail(passenger.email);
@@ -67,24 +67,25 @@ const login = async (passenger: LoginType) => {
 };
 
 const update = async (passenger: UpdateType) => {
-  const { credential, ...passengerDB } = passenger;
+  const { ...passengerDB } = passenger;
 
-  if (credential.rol !== Rol.PASSENGER) {
+  if (passenger.rol !== Rol.PASSENGER) {
     throw new UserForbiddenError('Not enough privileges to update a passenger');
   }
 
-  const passengerUpdated = await passengerRepository.findOneAndUpdate(credential.id, passengerDB);
+  const passengerUpdated = await passengerRepository.findOneAndUpdate(passenger.id, passengerDB);
 
   if (!passengerUpdated) {
     throw new UserNotFoundError('User not found');
   }
 
   const passengerFiltered = {
-    firstname: passengerUpdated.firstname,
+    name: passengerUpdated.name,
     lastname: passengerUpdated.lastname,
-    phoneNumber: passengerUpdated.phoneNumber,
+    birthday: passengerUpdated.birthday,
     age: passengerUpdated.age,
     address: passengerUpdated.address,
+    key: passengerUpdated.key,
   };
   return passengerFiltered;
 };
@@ -103,14 +104,28 @@ const block = async (passengerBody: BlockBodyType, passengerParams: BlockParamsT
   }
 
   const passengerFiltered = {
-    firstname: passengerUpdated.firstname,
+    name: passengerUpdated.name,
     lastname: passengerUpdated.lastname,
-    phoneNumber: passengerUpdated.phoneNumber,
+    birthday: passengerUpdated.birthday,
     age: passengerUpdated.age,
     address: passengerUpdated.address,
   };
   return passengerFiltered;
 };
+
+const data = async (passenger: CheckType) => {
+
+  const passengerFound = await passengerRepository.findOneByEmail(passenger.email);
+
+  if (!passengerFound) {
+    throw new UserNotFoundError('User not found');
+  }
+  else{
+    return passengerFound;
+  }
+
+ // return passengerFiltered;
+}
 
 const passengerService = {
   validate,
@@ -118,6 +133,7 @@ const passengerService = {
   login,
   update,
   block,
+  data,
 };
 
 export default passengerService;

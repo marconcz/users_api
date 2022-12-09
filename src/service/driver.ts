@@ -6,7 +6,7 @@ import { UserForbiddenError, UserNotFoundError, UserUnauthorizedError } from '@s
 import {
   BlockBodyType,
   BlockParamsType,
-  LoginType, RegisterType, UpdateType,
+  LoginType, RegisterType, UpdateType, CheckType,
 } from '@src/schema/Driver';
 
 const register = async (driver: RegisterType) => {
@@ -15,13 +15,14 @@ const register = async (driver: RegisterType) => {
   driverDB.password = await bcrypt.hash(passwordConfirmation, salt);
   const driverSaved = await driverRepository.save({ ...driverDB });
 
-  const uid = driverSaved._id.toString();
-  const claims = {
-    email: driverSaved.email,
-    rol: Rol.DRIVER,
-  };
-  const customToken = await getAuth().createCustomToken(uid, claims);
-  return customToken;
+  // const uid = driverSaved._id.toString();
+  // const claims = {
+  //   email: driverSaved.email,
+  //   rol: Rol.DRIVER,
+  // };
+  // const customToken = await getAuth().createCustomToken(uid, claims);
+  // return customToken;
+  return driverSaved
 };
 
 const login = async (driver: LoginType) => {
@@ -46,7 +47,7 @@ const login = async (driver: LoginType) => {
 
   const uid = driverFound._id.toString();
   const claims = {
-    firstname: driverFound.firstname,
+    name: driverFound.name,
     lastname: driverFound.lastname,
     email: driverFound.email,
     rol: Rol.PASSENGER,
@@ -56,25 +57,25 @@ const login = async (driver: LoginType) => {
 };
 
 const update = async (driver: UpdateType) => {
-  const { credential, ...driverDB } = driver;
+  const { ...driverDB } = driver;
 
-  if (credential.rol !== Rol.DRIVER) {
+  if (driver.rol !== Rol.DRIVER) {
     throw new UserForbiddenError('Not enough privileges to update a driver');
   }
 
-  const driverUpdated = await driverRepository.findOneAndUpdate(credential.id, driverDB);
+  const driverUpdated = await driverRepository.findOneAndUpdate(driver.id, driverDB);
 
   if (!driverUpdated) {
     throw new UserNotFoundError('User not found');
   }
 
   const driverFiltered = {
-    firstname: driverUpdated.firstname,
+    name: driverUpdated.name,
     lastname: driverUpdated.lastname,
-    phoneNumber: driverUpdated.phoneNumber,
+    birthday: driverUpdated.birthday,
     age: driverUpdated.age,
-    license: driverUpdated.license,
-    vehicle: driverUpdated.vehicle,
+    address: driverUpdated.address,
+    key: driverUpdated.key,
   };
   return driverFiltered;
 };
@@ -93,9 +94,9 @@ const block = async (driverBody: BlockBodyType, driverParams: BlockParamsType) =
   }
 
   const driverFiltered = {
-    firstname: driverUpdated.firstname,
+    name: driverUpdated.name,
     lastname: driverUpdated.lastname,
-    phoneNumber: driverUpdated.phoneNumber,
+    birthday: driverUpdated.birthday,
     age: driverUpdated.age,
     license: driverUpdated.license,
     vehicle: driverUpdated.vehicle,
@@ -103,11 +104,27 @@ const block = async (driverBody: BlockBodyType, driverParams: BlockParamsType) =
   return driverFiltered;
 };
 
+const data = async (passenger: CheckType) => {
+
+  const passengerFound = await driverRepository.findOneByEmail(passenger.email);
+
+  if (!passengerFound) {
+    throw new UserNotFoundError('User not found');
+  }
+  else{
+    return passengerFound;
+  }
+
+ // return passengerFiltered;
+}
+
+
 const driverService = {
   register,
   login,
   update,
   block,
+  data,
 };
 
 export default driverService;
