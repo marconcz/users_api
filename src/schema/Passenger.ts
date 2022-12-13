@@ -41,7 +41,7 @@ const UpdateSchema = z.object({
 
     name: z.string().min(1).trim(),
     lastname: z.string().min(1).trim(),
-    address: z.string(),
+    idProfile : z.number(),
     //phoneNumber: z.string(),
     //age: z.number(),
     //address: z.object({

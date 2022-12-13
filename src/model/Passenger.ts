@@ -16,6 +16,9 @@ class Passenger {
   @prop({required: true, trim: true})
   public birthday!: string;
 
+  @prop({ default: 0 })
+  public idProfile?: number;
+
   @prop()
   public age?: number;
 
