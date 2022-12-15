@@ -18,7 +18,7 @@ class Driver {
   public birthday!: string;
   
   @prop({ default: 0 })
-  public idProfile?: number;
+  public idProfile?: string;
 
   @prop()
   public age?: number;
